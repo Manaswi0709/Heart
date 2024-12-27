@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="logo">
+        <img src="https://cdn.dribbble.com/users/4506667/screenshots/14492641/heart_disease_prediction_logo2_.png" alt="Logo">
+    </div>
+    <div class="heading">
+        <h1>Heart Disease Prediction</h1>
+    </div>
+    
+
+   
+    <div class="container">
+        
+        <div class="form-container">
+        <h2>Fill out the form to get prediction analysis</h2>
+        <form action="/predict" method="post" id="predictionForm">
+            <div class="form-group">
+                <label for="age">Age
+                    <span class="info-icon" data-tooltip="Enter your age in years.">ℹ</span>
+                </label>
+                <input type="number" id="age" name="age" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('ageDescription')">Learn More...</button>
+                <div id="ageDescription" class="description" style="display: none;">
+                    <p>Your age in completed years, which helps assess age-related risk factors for heart disease.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sex">Sex
+                    <span class="info-icon" data-tooltip="Select your biological sex (Male or Female).">ℹ</span>
+                </label>
+                <select id="sex" name="sex" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('sexDescription')">Learn More...</button>
+                <div id="sexDescription" class="description" style="display: none;">
+                    <p>Biological sex impacts heart disease risk, with males generally at higher risk than females.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cp">Chest Pain Type
+                    <span class="info-icon" data-tooltip="Select the type of chest pain you experience: Typical Angina, Atypical Angina, Non-Anginal Pain, or Asymptomatic.">ℹ</span>
+                </label>
+                <select id="cp" name="cp" required>
+                    <option value="0">Typical Angina</option>
+                    <option value="1">Atypical Angina</option>
+                    <option value="2">Non-Anginal Pain</option>
+                    <option value="3">Asymptomatic</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('cpDescription')">Learn More...</button>
+                <div id="cpDescription" class="description" style="display: none;">
+                    <p>
+                        Typical Angina: Pain caused by reduced blood flow to the heart.<br>
+                        Atypical Angina: Unusual chest discomfort not typical of heart disease.<br>
+                        Non-Anginal Pain: Pain unrelated to heart issues.<br>
+                        Asymptomatic: No noticeable chest pain or discomfort.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure (mm Hg)
+                    <span class="info-icon" data-tooltip="Enter your resting blood pressure in mm Hg. Normal resting blood pressure is around 120/80 mm Hg.">ℹ</span>
+                </label>
+                <input type="number" id="trestbps" name="trestbps" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('trestbpsDescription')">Learn More...</button>
+                <div id="trestbpsDescription" class="description" style="display: none;">
+                    <p>Blood pressure is the force of blood against artery walls when resting, used to assess cardiovascular health.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="chol">Serum Cholesterol (mg/dl)
+                    <span class="info-icon" data-tooltip="Enter your serum cholesterol level in mg/dl. Normal cholesterol level is below 200 mg/dl.">ℹ</span>
+                </label>
+                <input type="number" id="chol" name="chol" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('cholDescription')">Learn More...</button>
+                <div id="cholDescription" class="description" style="display: none;">
+                    <p>Measures fat in the blood; high cholesterol increases heart disease risk.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar > 120 mg/dl
+                    <span class="info-icon" data-tooltip="Select 'True' if your fasting blood sugar is greater than 120 mg/dl.">ℹ</span>
+                </label>
+                <select id="fbs" name="fbs" required>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('fbsDescription')">Learn More...</button>
+                <div id="fbsDescription" class="description" style="display: none;">
+                    <p>High fasting blood sugar (above 120) may indicate diabetes, which raises heart disease risk.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="restecg">Resting ECG Results
+                    <span class="info-icon" data-tooltip="Select your resting ECG result: Normal, ST-T abnormality, or Left ventricular hypertrophy.">ℹ</span>
+                </label>
+                <select id="restecg" name="restecg" required>
+                    <option value="0">Normal</option>
+                    <option value="1">ST-T Abnormality</option>
+                    <option value="2">Left Ventricular Hypertrophy</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('restecgDescription')">Learn More...</button>
+                <div id="restecgDescription" class="description" style="display: none;">
+                    <p>
+                        Normal: No electrical activity issues in the heart.<br>
+                        ST-T Abnormality: Indicates potential heart damage or poor blood flow.<br>
+                        Left Ventricular Hypertrophy: Enlarged left heart chamber, often due to high blood pressure.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="thalach">Max Heart Rate Achieved
+                    <span class="info-icon" data-tooltip="Enter the maximum heart rate achieved during exercise testing.">ℹ</span>
+                </label>
+                <input type="number" id="thalach" name="thalach" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('thalachDescription')">Learn More...</button>
+                <div id="thalachDescription" class="description" style="display: none;">
+                    <p>The highest heart rate reached during exercise; lower than expected can indicate heart problems.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina
+                    <span class="info-icon" data-tooltip="Select 'Yes' if you experience chest pain during exercise, otherwise select 'No'.">ℹ</span>
+                </label>
+                <select id="exang" name="exang" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('exangDescription')">Learn More...</button>
+                <div id="exangDescription" class="description" style="display: none;">
+                    <p>Chest pain caused by exercise can indicate reduced blood flow to the heart.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="oldpeak">ST Depression Induced by Exercise
+                    <span class="info-icon" data-tooltip="Enter the ST depression induced by exercise compared to resting values.">ℹ</span>
+                </label>
+                <input type="number" id="oldpeak" name="oldpeak" step="0.1" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('oldpeakDescription')">Learn More...</button>
+                <div id="oldpeakDescription" class="description" style="display: none;">
+                    <p>Measures changes in heart activity during exercise, showing if the heart gets enough oxygen.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="slope">Slope of Peak Exercise ST Segment
+                    <span class="info-icon" data-tooltip="Select the slope of the peak ST segment during exercise: Upsloping, Flat, Downsloping.">ℹ</span>
+                </label>
+                <select id="slope" name="slope" required>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('slopeDescription')">Learn More...</button>
+                <div id="slopeDescription" class="description" style="display: none;">
+                    <p>
+                        Upsloping: Typically less concerning.<br>
+                        Flat: May indicate limited blood flow.<br>
+                        Downsloping: Higher likelihood of severe heart disease.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels (0-3)
+                    <span class="info-icon" data-tooltip="Enter the number of major vessels with blockages as detected by fluoroscopy (0-3).">ℹ</span>
+                </label>
+                <input type="number" id="ca" name="ca" min="0" max="3" required>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('caDescription')">Learn More...</button>
+                <div id="caDescription" class="description" style="display: none;">
+                    <p>Number of heart vessels with visible blockages under imaging; more blockages often mean higher risk.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="thal">Thalassemia
+                    <span class="info-icon" data-tooltip="Select the type of thalassemia: Normal, Fixed Defect, or Reversible Defect.">ℹ</span>
+                </label>
+                <select id="thal" name="thal" required>
+                    <option value="0">Normal</option>
+                    <option value="1">Fixed Defect</option>
+                    <option value="2">Reversible Defect</option>
+                    <option value="3">Borderline</option>
+                </select>
+                <button type="button" class="more-info-btn" onclick="toggleDescription('thalDescription')">Learn More...</button>
+                <div id="thalDescription" class="description" style="display: none;">
+                    <p>
+                        It is a genetic disorder affecting the production of hemoglobin, which can lead to anemia and impact heart health. It may cause fatigue, shortness of breath, and, in severe cases, heart complications.
+                        Normal: No thalassemia or blood flow issues.<br>
+                        Fixed Defect: Permanent damage to the heart.<br>
+                        Reversible Defect: Blood flow improves with treatment or reduced stress.
+                    </p>
+                </div>
+            </div>
+
+            <input type="submit" value="Predict">
+        </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
